@@ -1,157 +1,157 @@
 '''
 
-This script used to convert ioctl codes for human-readable values while reverse engineering Windows Drivers.
-You can also use this as a regular snippet in Ida Python.
+This script used to convert ioctl codes for human-readable values while reverse engineering
+Windows Drivers. You can also use this as a regular snippet in Ida Python.
 
 Author: @Sv4r0g
 
 '''
 
 
-device = [None] * 94
+DEVICE = [None] * 94
 
-device[1]  = "BEEP"
-device[2]  = "CD_ROM"
-device[3]  = "CD_ROM_FILE_SYSTEM"
-device[4]  = "CONTROLLER"
-device[5]  = "DATALINK"
-device[6]  = "DFS"
-device[7]  = "DISK"
-device[8]  = "DISK_FILE_SYSTEM"
-device[9]  = "FILE_SYSTEM"
-device[10] = "INPORT_PORT"
-device[11] = "KEYBOARD"
-device[12] = "MAILSLOT"
-device[13] = "MIDI_IN"
-device[14] = "MIDI_OUT"
-device[15] = "MOUSE"
-device[16] = "MULTI_UNC_PROVIDER"
-device[17] = "NAMED_PIPE"
-device[18] = "NETWORK"
-device[19] = "NETWORK_BROWSER"
-device[20] = "NETWORK_FILE_SYSTEM"
-device[21] = "NULL"
-device[22] = "PARALLEL_PORT"
-device[23] = "PHYSICAL_NETCARD"
-device[24] = "PRINTER"
-device[25] = "SCANNER"
-device[26] = "SERIAL_MOUSE_PORT"
-device[27] = "SERIAL_PORT"
-device[28] = "SCREEN"
-device[29] = "SOUND"
-device[30] = "STREAMS"
-device[31] = "TAPE"
-device[32] = "TAPE_FILE_SYSTEM"
-device[33] = "TRANSPORT"
-device[34] = "UNKNOWN"
-device[35] = "VIDEO"
-device[36] = "VIRTUAL_DISK"
-device[37] = "WAVE_IN"
-device[38] = "WAVE_OUT"
-device[39] = "8042_PORT"
-device[40] = "NETWORK_REDIRECTOR"
-device[41] = "BATTERY"
-device[42] = "BUS_EXTENDER"
-device[43] = "MODEM"
-device[44] = "VDM"
-device[45] = "MASS_STORAGE"
-device[46] = "SMB"
-device[47] = "KS"
-device[48] = "CHANGER"
-device[49] = "SMARTCARD"
-device[50] = "ACPI"
-device[51] = "DVD"
-device[52] = "FULLSCREEN_VIDEO"
-device[53] = "DFS_FILE_SYSTEM"
-device[54] = "DFS_VOLUME"
-device[55] = "SERENUM"
-device[56] = "TERMSRV"
-device[57] = "KSEC"
-device[58] = "FIPS"
-device[59] = "INFINIBAND"
-device[62] = "VMBUS"
-device[63] = "CRYPT_PROVIDER"
-device[64] = "WDP"
-device[65] = "BLUETOOTH"
-device[66] = "MT_COMPOSITE"
-device[67] = "MT_TRANSPORT"
-device[68] = "BIOMETRIC"
-device[69] = "PMI"
-device[70] = "EHSTOR"
-device[71] = "DEVAPI"
-device[72] = "GPIO"
-device[73] = "USBEX"
-device[80] = "CONSOLE"
-device[81] = "NFP"
-device[82] = "SYSENV"
-device[83] = "VIRTUAL_BLOCK"
-device[84] = "POINT_OF_SERVICE"
-device[85] = "STORAGE_REPLICATION"
-device[86] = "TRUST_ENV"
-device[87] = "UCM"
-device[88] = "UCMTCPCI"
-device[89] = "PERSISTENT_MEMORY"
-device[90] = "NVDIMM"
-device[91] = "HOLOGRAPHIC"
-device[92] = "SDFXHCI"
-device[93] = "UCMUCSI"  
+DEVICE[1] = "BEEP"
+DEVICE[2] = "CD_ROM"
+DEVICE[3] = "CD_ROM_FILE_SYSTEM"
+DEVICE[4] = "CONTROLLER"
+DEVICE[5] = "DATALINK"
+DEVICE[6] = "DFS"
+DEVICE[7] = "DISK"
+DEVICE[8] = "DISK_FILE_SYSTEM"
+DEVICE[9] = "FILE_SYSTEM"
+DEVICE[10] = "INPORT_PORT"
+DEVICE[11] = "KEYBOARD"
+DEVICE[12] = "MAILSLOT"
+DEVICE[13] = "MIDI_IN"
+DEVICE[14] = "MIDI_OUT"
+DEVICE[15] = "MOUSE"
+DEVICE[16] = "MULTI_UNC_PROVIDER"
+DEVICE[17] = "NAMED_PIPE"
+DEVICE[18] = "NETWORK"
+DEVICE[19] = "NETWORK_BROWSER"
+DEVICE[20] = "NETWORK_FILE_SYSTEM"
+DEVICE[21] = "NULL"
+DEVICE[22] = "PARALLEL_PORT"
+DEVICE[23] = "PHYSICAL_NETCARD"
+DEVICE[24] = "PRINTER"
+DEVICE[25] = "SCANNER"
+DEVICE[26] = "SERIAL_MOUSE_PORT"
+DEVICE[27] = "SERIAL_PORT"
+DEVICE[28] = "SCREEN"
+DEVICE[29] = "SOUND"
+DEVICE[30] = "STREAMS"
+DEVICE[31] = "TAPE"
+DEVICE[32] = "TAPE_FILE_SYSTEM"
+DEVICE[33] = "TRANSPORT"
+DEVICE[34] = "UNKNOWN"
+DEVICE[35] = "VIDEO"
+DEVICE[36] = "VIRTUAL_DISK"
+DEVICE[37] = "WAVE_IN"
+DEVICE[38] = "WAVE_OUT"
+DEVICE[39] = "8042_PORT"
+DEVICE[40] = "NETWORK_REDIRECTOR"
+DEVICE[41] = "BATTERY"
+DEVICE[42] = "BUS_EXTENDER"
+DEVICE[43] = "MODEM"
+DEVICE[44] = "VDM"
+DEVICE[45] = "MASS_STORAGE"
+DEVICE[46] = "SMB"
+DEVICE[47] = "KS"
+DEVICE[48] = "CHANGER"
+DEVICE[49] = "SMARTCARD"
+DEVICE[50] = "ACPI"
+DEVICE[51] = "DVD"
+DEVICE[52] = "FULLSCREEN_VIDEO"
+DEVICE[53] = "DFS_FILE_SYSTEM"
+DEVICE[54] = "DFS_VOLUME"
+DEVICE[55] = "SERENUM"
+DEVICE[56] = "TERMSRV"
+DEVICE[57] = "KSEC"
+DEVICE[58] = "FIPS"
+DEVICE[59] = "INFINIBAND"
+DEVICE[62] = "VMBUS"
+DEVICE[63] = "CRYPT_PROVIDER"
+DEVICE[64] = "WDP"
+DEVICE[65] = "BLUETOOTH"
+DEVICE[66] = "MT_COMPOSITE"
+DEVICE[67] = "MT_TRANSPORT"
+DEVICE[68] = "BIOMETRIC"
+DEVICE[69] = "PMI"
+DEVICE[70] = "EHSTOR"
+DEVICE[71] = "DEVAPI"
+DEVICE[72] = "GPIO"
+DEVICE[73] = "USBEX"
+DEVICE[80] = "CONSOLE"
+DEVICE[81] = "NFP"
+DEVICE[82] = "SYSENV"
+DEVICE[83] = "VIRTUAL_BLOCK"
+DEVICE[84] = "POINT_OF_SERVICE"
+DEVICE[85] = "STORAGE_REPLICATION"
+DEVICE[86] = "TRUST_ENV"
+DEVICE[87] = "UCM"
+DEVICE[88] = "UCMTCPCI"
+DEVICE[89] = "PERSISTENT_MEMORY"
+DEVICE[90] = "NVDIMM"
+DEVICE[91] = "HOLOGRAPHIC"
+DEVICE[92] = "SDFXHCI"
+DEVICE[93] = "UCMUCSI"
 
-access = [None] * 4
+ACCESS = [None] * 4
 
-access[0] = "FILE_ANY_ACCESS"
-access[1] = "FILE_READ_ACCESS"
-access[2] = "FILE_WRITE_ACCESS"
-access[3] = "Read and Write"
+ACCESS[0] = "FILE_ANY_ACCESS"
+ACCESS[1] = "FILE_READ_ACCESS"
+ACCESS[2] = "FILE_WRITE_ACCESS"
+ACCESS[3] = "Read and Write"
 
-method = [None] * 4
+METHOD = [None] * 4
 
-method[0] = "METHOD_BUFFERED"
-method[1] = "METHOD_IN_DIRECT"
-method[2] = "METHOD_OUT_DIRECT"
-method[3] = "METHOD_NEITHER"
+METHOD[0] = "METHOD_BUFFERED"
+METHOD[1] = "METHOD_IN_DIRECT"
+METHOD[2] = "METHOD_OUT_DIRECT"
+METHOD[3] = "METHOD_NEITHER"
 
 # Function codes 0-2047 are reserved for Microsoft Corporation, and
-# 2048-4095 are reserved for customers. We use MAX_FUNC_CODE macro to handle
+# 2048-4095 are reserved for customers. We use MAX_FUNC_CODE constant to handle
 # all possible function codes.
 
 MAX_FUNC_CODE = 0xfff
 
-ioctlcode = int('0x2222ce', 16)
-deviceVal = (ioctlcode >> 16) & 0xfff
-funcVal = (ioctlcode >> 2) & 0xfff
-accessVal = (ioctlcode >> 14) & 3
-methodVal = ioctlcode & 3
+IOCTL_CODE = int('0x2222ce', 16)
+DEVICE_VAL = (IOCTL_CODE >> 16) & 0xfff
+FUNC_VAL = (IOCTL_CODE >> 2) & 0xfff
+ACCESS_VAL = (IOCTL_CODE >> 14) & 3
+METHOD_VAL = IOCTL_CODE & 3
 
-def PrintData():
-    print "%s\n%s\n%s\n%s" % (PrintDeviceVal(),
-                              PrintFuncVal() ,
-                              PrintAccessVal(), 
-                              PrintMethodVal())
+def print_data():
+    print "%s\n%s\n%s\n%s" % (print_device_val(),
+                              print_func_val(),
+                              print_access_val(),
+                              print_method_val())
     return 0
 
-def IoctlDec():
+def ioctl_dec():
     try:
-        if (funcVal <= MAX_FUNC_CODE) & (deviceVal != 0):
-            return PrintData()
+        if (FUNC_VAL <= MAX_FUNC_CODE) & (DEVICE_VAL != 0):
+            return print_data()
     except IndexError:
-            return "Error: device type out of range" 
-                
-def PrintDeviceVal():
-    return "Device type: %s %s" % (device[deviceVal], hex(deviceVal))
+        return "Error: device type out of range"
 
-def PrintFuncVal():
-    return "Function value is: %s" % hex(funcVal) 
+def print_device_val():
+    return "Device type: %s %s" % (DEVICE[DEVICE_VAL], hex(DEVICE_VAL))
 
-def PrintAccessVal():
-    if (accessVal <= 4):
-        return "Access: %s %s" % (access[accessVal], hex(accessVal))
+def print_func_val():
+    return "Function value: %s" % hex(FUNC_VAL)
+
+def print_access_val():
+    if ACCESS_VAL <= 4:
+        return "Access: %s %s" % (ACCESS[ACCESS_VAL], hex(ACCESS_VAL))
     else:
         return 0
 
-def PrintMethodVal():
-    if (methodVal <= 4):
-        return "Method: %s %s" % (method[methodVal], hex(methodVal))
+def print_method_val():
+    if METHOD_VAL <= 4:
+        return "Method: %s %s" % (METHOD[METHOD_VAL], hex(METHOD_VAL))
     else:
         return 0
-        
-print IoctlDec()
+
+print ioctl_dec()
