@@ -7,6 +7,7 @@ Author: @Sv4r0g
 
 '''
 
+from sys import argv, exit #pylint: disable=redefined-builtin
 
 DEVICE = [None] * 94
 
@@ -116,42 +117,50 @@ METHOD[3] = "METHOD_NEITHER"
 
 MAX_FUNC_CODE = 0xfff
 
-IOCTL_CODE = int('0x2222ce', 16)
+IOCTL_CODE = int(argv[1], 16)
 DEVICE_VAL = (IOCTL_CODE >> 16) & 0xfff
 FUNC_VAL = (IOCTL_CODE >> 2) & 0xfff
 ACCESS_VAL = (IOCTL_CODE >> 14) & 3
 METHOD_VAL = IOCTL_CODE & 3
 
+def main():
+    """Check for argv len and print result"""
+    if len(argv) != 2:
+        exit("Usage: python ioctldec.py 0x2222ce")
+    return ioctl_dec()
+
 def print_data():
+    """Print data as a format string"""
     print "%s\n%s\n%s\n%s" % (print_device_val(),
                               print_func_val(),
                               print_access_val(),
                               print_method_val())
-    return 0
 
 def ioctl_dec():
+    """Check for a valid ioctl code and print data"""
     try:
         if (FUNC_VAL <= MAX_FUNC_CODE) & (DEVICE_VAL != 0):
             return print_data()
     except IndexError:
-        return "Error: device type out of range"
+        exit("Error: device type out of range")
 
 def print_device_val():
+    """Return a device type"""
     return "Device type: %s %s" % (DEVICE[DEVICE_VAL], hex(DEVICE_VAL))
 
 def print_func_val():
+    """Return a function value"""
     return "Function value: %s" % hex(FUNC_VAL)
 
 def print_access_val():
+    """Return an access value"""
     if ACCESS_VAL <= 4:
         return "Access: %s %s" % (ACCESS[ACCESS_VAL], hex(ACCESS_VAL))
-    else:
-        return 0
 
 def print_method_val():
+    """Return method value"""
     if METHOD_VAL <= 4:
         return "Method: %s %s" % (METHOD[METHOD_VAL], hex(METHOD_VAL))
-    else:
-        return 0
 
-print ioctl_dec()
+if __name__ == "__main__":
+    main()
